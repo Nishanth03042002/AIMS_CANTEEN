@@ -114,20 +114,25 @@ const upload = multer({
 
 // ==================== STATIC FILES & ROUTES ====================
 
-// Serve static assets (CSS, JS, images)
-app.use(express.static(path.join(__dirname, '../frontend')));
+const frontendPath = path.join(__dirname, '../frontend');
+app.use(express.static(frontendPath));
 
-// Clean URL routes for frontend pages
+// Clean routes for pages
 app.get(['/client-side', '/client-side.html'], (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/client-side.html'));
+  res.sendFile(path.join(frontendPath, 'client-side.html'));
 });
 
 app.get(['/admin-side', '/admin-side.html'], (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/admin-side.html'));
+  res.sendFile(path.join(frontendPath, 'admin-side.html'));
 });
 
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+// Catch-all route (for unknown paths)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // ==================== AUTHENTICATION MIDDLEWARE ====================
